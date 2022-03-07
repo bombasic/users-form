@@ -37,7 +37,7 @@ const BasicForm = (props) => {
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
-    if (firstNameHasError || lastNameHasError || emailHasError) {
+    if (!formIsValid) {
       return;
     }
 
