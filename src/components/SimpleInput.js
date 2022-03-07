@@ -21,14 +21,14 @@ const SimpleInput = (props) => {
 
   let formIsValid = false;
 
-  if (enteredNameisValid && enteredEmail) {
+  if (enteredNameisValid && enteredEmailIsValid) {
     formIsValid = true;
   }
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
 
-    if (nameHasError || !enteredEmailIsValid) {
+    if (nameHasError || emailHasError) {
       return;
     }
 
