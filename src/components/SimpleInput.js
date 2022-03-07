@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import useInput from "../hooks/use-input";
 
 const SimpleInput = (props) => {
@@ -12,25 +10,20 @@ const SimpleInput = (props) => {
     resetValue: resetName,
   } = useInput((value) => value.trim() !== "");
 
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredEmailTouched, setEnteredEmailTouched] = useState(false);
-
-  const enteredEmailIsValid = enteredEmail.includes("@");
-  const emailInputIsInvalid = !enteredEmailIsValid && enteredEmailTouched;
+  const {
+    value: enteredEmail,
+    isValid: enteredEmailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    valueInputBlurHandler: emailBlurHandler,
+    resetValue: resetEmail,
+  } = useInput((value) => value.includes("@"));
 
   let formIsValid = false;
 
   if (enteredNameisValid && enteredEmail) {
     formIsValid = true;
   }
-
-  const emailInputChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
-  };
-
-  const emailInputBlurHandler = (event) => {
-    setEnteredEmailTouched(true);
-  };
 
   const formSubmissionHandler = (event) => {
     event.preventDefault();
@@ -43,14 +36,13 @@ const SimpleInput = (props) => {
     console.log(enteredEmail);
 
     resetName();
-    setEnteredEmail("");
-    setEnteredEmailTouched(false);
+    resetEmail();
   };
 
   const nameInputClasses = !nameHasError
     ? "form-control"
     : "form-control invalid";
-  const emailInputClasses = !emailInputIsInvalid
+  const emailInputClasses = !emailHasError
     ? "form-control"
     : "form-control invalid";
 
@@ -72,11 +64,11 @@ const SimpleInput = (props) => {
         <input
           type="text"
           id="email"
-          onChange={emailInputChangeHandler}
-          onBlur={emailInputBlurHandler}
+          onChange={emailChangeHandler}
+          onBlur={emailBlurHandler}
           value={enteredEmail}
         />
-        {emailInputIsInvalid && <p className="error-text">Must include @</p>}
+        {emailHasError && <p className="error-text">Must include @</p>}
       </div>
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>
